@@ -1,0 +1,141 @@
+diff --git a/cau-hinh/keycloak/realm.json b/cau-hinh/keycloak/realm.json
+index 025f514..8ba95fd 100644
+--- a/cau-hinh/keycloak/realm.json
++++ b/cau-hinh/keycloak/realm.json
+@@ -5,8 +5,29 @@
+   "sslRequired": "none",
+ 
+   "accessTokenLifespan": 300,
++  "ssoSessionIdleTimeout": 900,
++  "ssoSessionMaxLifespan": 36000,
++  "clientSessionIdleTimeout": 900,
++  "clientSessionMaxLifespan": 36000,
++  "revokeRefreshToken": true,
++  "refreshTokenMaxReuse": 0,
++  "resetPasswordAllowed": false,
++  "bruteForceProtected": true,
++  "failureFactor": 5,
++  "waitIncrementSeconds": 60,
++  "quickLoginCheckMilliSeconds": 1000,
++  "minimumQuickLoginWaitSeconds": 60,
++  "maxFailureWaitSeconds": 900,
++  "maxDeltaTimeSeconds": 43200,
+ 
+   "defaultSignatureAlgorithm": "RS256",
++  "browserFlow": "Browser with admin TOTP",
++
++  "otpPolicyType": "totp",
++  "otpPolicyAlgorithm": "HmacSHA1",
++  "otpPolicyDigits": 6,
++  "otpPolicyPeriod": 30,
++  "otpPolicyCodeReusable": false,
+ 
+   "roles": {
+     "realm": [
+@@ -159,5 +180,105 @@
+       "bearerOnly": true,
+       "fullScopeAllowed": false
+     }
++  ],
++
++  "authenticatorConfig": [
++    {
++      "alias": "admin-role-condition",
++      "config": {
++        "condUserRole": "admin",
++        "negate": "false"
++      }
++    }
++  ],
++
++  "authenticationFlows": [
++    {
++      "id": "browser-admin-totp",
++      "alias": "Browser with admin TOTP",
++      "description": "Browser login requiring TOTP for users with the admin realm role",
++      "providerId": "basic-flow",
++      "topLevel": true,
++      "builtIn": false,
++      "authenticationExecutions": [
++        {
++          "authenticator": "auth-cookie",
++          "authenticatorFlow": false,
++          "requirement": "ALTERNATIVE",
++          "priority": 10,
++          "userSetupAllowed": false
++        },
++        {
++          "authenticator": "auth-spnego",
++          "authenticatorFlow": false,
++          "requirement": "DISABLED",
++          "priority": 20,
++          "userSetupAllowed": false
++        },
++        {
++          "authenticator": "identity-provider-redirector",
++          "authenticatorFlow": false,
++          "requirement": "ALTERNATIVE",
++          "priority": 25,
++          "userSetupAllowed": false
++        },
++        {
++          "authenticatorFlow": true,
++          "requirement": "ALTERNATIVE",
++          "priority": 30,
++          "flowAlias": "Browser login forms",
++          "userSetupAllowed": false
++        }
++      ]
++    },
++    {
++      "id": "browser-admin-totp-forms",
++      "alias": "Browser login forms",
++      "description": "Username and password form for browser login",
++      "providerId": "basic-flow",
++      "topLevel": false,
++      "builtIn": false,
++      "authenticationExecutions": [
++        {
++          "authenticator": "auth-username-password-form",
++          "authenticatorFlow": false,
++          "requirement": "REQUIRED",
++          "priority": 10,
++          "userSetupAllowed": false
++        },
++        {
++          "authenticatorFlow": true,
++          "requirement": "CONDITIONAL",
++          "priority": 20,
++          "flowAlias": "Admin TOTP",
++          "userSetupAllowed": false
++        }
++      ]
++    },
++    {
++      "id": "browser-admin-totp-only",
++      "alias": "Admin TOTP",
++      "description": "Requires an OTP for users with the admin realm role",
++      "providerId": "basic-flow",
++      "topLevel": false,
++      "builtIn": false,
++      "authenticationExecutions": [
++        {
++          "authenticator": "conditional-user-role",
++          "authenticatorFlow": false,
++          "requirement": "REQUIRED",
++          "priority": 10,
++          "authenticatorConfig": "admin-role-condition",
++          "userSetupAllowed": false
++        },
++        {
++          "authenticator": "auth-otp-form",
++          "authenticatorFlow": false,
++          "requirement": "REQUIRED",
++          "priority": 20,
++          "userSetupAllowed": true
++        }
++      ]
++    }
+   ]
+ }
+\ No newline at end of file

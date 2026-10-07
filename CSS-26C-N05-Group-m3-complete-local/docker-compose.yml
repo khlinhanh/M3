@@ -1,0 +1,65 @@
+services:
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4
+
+    command:
+      - start-dev
+      - --http-port=8080
+      - --hostname=http://localhost:8080
+      - --import-realm
+
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin-dev-only}
+
+    ports:
+      - "127.0.0.1:8080:8080"
+
+    volumes:
+      - ./cau-hinh/keycloak/realm.json:/opt/keycloak/data/import/realm.json:ro
+
+  resource-server-1:
+    build:
+      context: ./ma-nguon/resource-server
+
+    environment:
+      OIDC_ISSUER: http://localhost:8080/realms/ecommerce
+      OIDC_INTERNAL_URL: http://keycloak:8080/realms/ecommerce
+      OIDC_AUDIENCE: app1-api
+
+    depends_on:
+      - keycloak
+
+    ports:
+      - "127.0.0.1:8001:8000"
+
+  resource-server-2:
+    build:
+      context: ./ma-nguon/resource-server
+
+    environment:
+      OIDC_ISSUER: http://localhost:8080/realms/ecommerce
+      OIDC_INTERNAL_URL: http://keycloak:8080/realms/ecommerce
+      OIDC_AUDIENCE: app2-api
+
+    depends_on:
+      - keycloak
+
+    ports:
+      - "127.0.0.1:8002:8000"
+
+  resource-server-3:
+    build:
+      context: ./ma-nguon/resource-server
+
+    environment:
+      OIDC_ISSUER: http://localhost:8080/realms/ecommerce
+      OIDC_INTERNAL_URL: http://keycloak:8080/realms/ecommerce
+      OIDC_AUDIENCE: app3-api
+
+    depends_on:
+      - keycloak
+
+    ports:
+      - "127.0.0.1:8003:8000"

@@ -1,0 +1,60 @@
+test_all_applications_keep_distinct_audiences_and_pkce (test_realm_security.RealmSecurityTests.test_all_applications_keep_distinct_audiences_and_pkce) ... ok
+test_browser_flow_requires_totp_only_for_admin_role (test_realm_security.RealmSecurityTests.test_browser_flow_requires_totp_only_for_admin_role) ... ok
+test_retains_latest_local_realm_and_access_token_defaults (test_realm_security.RealmSecurityTests.test_retains_latest_local_realm_and_access_token_defaults) ... ok
+test_self_service_password_recovery_is_disabled_and_brute_force_protected (test_realm_security.RealmSecurityTests.test_self_service_password_recovery_is_disabled_and_brute_force_protected) ... ok
+test_session_and_refresh_token_lifetimes_are_bounded (test_realm_security.RealmSecurityTests.test_session_and_refresh_token_lifetimes_are_bounded) ... ok
+test_totp_policy_is_six_digit_thirty_second_totp (test_realm_security.RealmSecurityTests.test_totp_policy_is_six_digit_thirty_second_totp) ... ok
+test_accepts_valid_token (test_token_verification.TokenVerificationTests.test_accepts_valid_token) ... ok
+test_admin_role_can_access_admin_api (test_token_verification.TokenVerificationTests.test_admin_role_can_access_admin_api) ... ok
+test_rejects_alg_none (test_token_verification.TokenVerificationTests.test_rejects_alg_none) ... ok
+test_rejects_app3_audience (test_token_verification.TokenVerificationTests.test_rejects_app3_audience) ... JWT VERIFY ERROR: InvalidAudienceError("Audience doesn't match")
+ok
+test_rejects_empty_bearer_token (test_token_verification.TokenVerificationTests.test_rejects_empty_bearer_token) ... ok
+test_rejects_expired_token (test_token_verification.TokenVerificationTests.test_rejects_expired_token) ... ok
+test_rejects_invalid_signature (test_token_verification.TokenVerificationTests.test_rejects_invalid_signature) ... JWT VERIFY ERROR: ExpiredSignatureError('Signature has expired')
+JWT VERIFY ERROR: InvalidSignatureError('Signature verification failed')
+ok
+test_rejects_malformed_token (test_token_verification.TokenVerificationTests.test_rejects_malformed_token) ... JWT VERIFY ERROR: DecodeError('Not enough segments')
+ok
+test_rejects_missing_audience (test_token_verification.TokenVerificationTests.test_rejects_missing_audience) ... JWT VERIFY ERROR: MissingRequiredClaimError('aud')
+ok
+test_rejects_missing_authorization_header (test_token_verification.TokenVerificationTests.test_rejects_missing_authorization_header) ... ok
+test_rejects_missing_expiration (test_token_verification.TokenVerificationTests.test_rejects_missing_expiration) ... ok
+test_rejects_missing_issued_at (test_token_verification.TokenVerificationTests.test_rejects_missing_issued_at) ... JWT VERIFY ERROR: MissingRequiredClaimError('exp')
+ok
+test_rejects_missing_issuer (test_token_verification.TokenVerificationTests.test_rejects_missing_issuer) ... JWT VERIFY ERROR: MissingRequiredClaimError('iat')
+ok
+test_rejects_non_bearer_authorization (test_token_verification.TokenVerificationTests.test_rejects_non_bearer_authorization) ... ok
+test_rejects_token_not_yet_valid (test_token_verification.TokenVerificationTests.test_rejects_token_not_yet_valid) ... JWT VERIFY ERROR: MissingRequiredClaimError('iss')
+JWT VERIFY ERROR: ImmatureSignatureError('The token is not yet valid (nbf)')
+ok
+test_rejects_unknown_signing_key (test_token_verification.TokenVerificationTests.test_rejects_unknown_signing_key) ... ok
+test_rejects_unsupported_hmac_algorithm (test_token_verification.TokenVerificationTests.test_rejects_unsupported_hmac_algorithm) ... ok
+test_rejects_wrong_audience (test_token_verification.TokenVerificationTests.test_rejects_wrong_audience) ... JWT VERIFY ERROR: InvalidAudienceError("Audience doesn't match")
+ok
+test_rejects_wrong_issuer (test_token_verification.TokenVerificationTests.test_rejects_wrong_issuer) ... JWT VERIFY ERROR: InvalidIssuerError('Invalid issuer')
+ok
+test_user_role_can_access_user_api (test_token_verification.TokenVerificationTests.test_user_role_can_access_user_api) ... ok
+test_user_role_is_denied_admin_api (test_token_verification.TokenVerificationTests.test_user_role_is_denied_admin_api) ... ok
+test_user_without_role_is_denied_user_api (test_token_verification.TokenVerificationTests.test_user_without_role_is_denied_user_api) ... ok
+
+----------------------------------------------------------------------
+Ran 28 tests in 0.039s
+
+OK
+=== Kiem tra Keycloak ===
+Keycloak: OK
+=== Kiem tra Resource Server 1 ===
+Resource Server 1: OK
+=== Kiem tra Resource Server 2 ===
+Resource Server 2: OK
+=== Kiem tra Resource Server 3 ===
+Resource Server 3: OK
+make evidence
+make[1]: Entering directory '/mnt/c/Users/Linh/Downloads/CSS-26C-N05-work'
+python3 scripts/export_filtered_realm.py
+Security configuration checks: PASS (OIDC clients, PKCE/audience, admin-only TOTP, sessions, recovery)
+Filtered Keycloak realm export: bang-chung/realm-export-filtered.json
+make[1]: Leaving directory '/mnt/c/Users/Linh/Downloads/CSS-26C-N05-work'
+M3 security evidence: PASS
+M2 verification: PASS
